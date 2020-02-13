@@ -166,13 +166,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--mode",  choices=["train", "test"], default="train")
     parser.add_argument("--gpu", type=int, default=-1, help="GPU to use. Set -1 to use CPU.")
-    parser.add_argument("--epochs", type=int, default=250)
+    parser.add_argument("--epochs", type=int, default=200)
     parser.add_argument("--batch-size", type=int, default=2)
     parser.add_argument("--model",  choices=["base", "gat"], default="gat")
     parser.add_argument("--hidden_dim", type=int, default=100)
     parser.add_argument("--num_heads", type=int, default=1)
     parser.add_argument("--num_layers", type=int, default=2)
-
 
     args = parser.parse_args()
     main(args)
