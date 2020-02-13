@@ -101,25 +101,19 @@ def main(args):
 
 def train(model, loss_fcn, device, optimizer, train_dataloader, test_dataset):
     for epoch in range(args.epochs):
-        print(1)
         model.train()
         losses = []
         for batch, data in enumerate(train_dataloader):
-            print(2)
             subgraph, features, labels = data
             features = features.to(device)
             labels = labels.to(device)
 
             model.set_g(subgraph)
-            print(3)
 
             logits = model(features.float())
-            print(3.1)
             loss = loss_fcn(logits, labels.float())
             optimizer.zero_grad()
-            print(4)
             loss.backward()
-            print(5)
             optimizer.step()
             losses.append(loss.item())
         loss_data = np.array(losses).mean()
