@@ -45,14 +45,19 @@ def main(args):
     device = torch.device("cpu" if args.gpu < 0 else "cuda:" + str(args.gpu))
     print(f"Using device: {device}")
 
-    # model = BasicGraphModel(g=train_dataset.graph, n_layers=2, input_size=n_features,
-    #                         hidden_size=256, output_size=n_classes, nonlinearity=F.elu).to(device)
-
-    model = GAT(g=train_dataset.graph,
-                in_dim=n_features,
-                hidden_dim=args.hidden_dim,
-                out_dim=n_classes,
-                num_heads=args.num_heads).to(device)
+    if args.model == 'gat':
+        print(f"Using model GAT")
+        print(f"Number of heads: {args.num_heads}")
+        print(f"Hidden dim: {args.hidden_dim}")
+        model = GAT(g=train_dataset.graph,
+                    in_dim=n_features,
+                    hidden_dim=args.hidden_dim,
+                    out_dim=n_classes,
+                    num_heads=args.num_heads).to(device)
+    else:
+        print(f"Using base model (GCN)")
+        model = BasicGraphModel(g=train_dataset.graph, n_layers=2, input_size=n_features,
+                                hidden_size=256, output_size=n_classes, nonlinearity=F.elu).to(device)
 
     loss_fcn = nn.BCEWithLogitsLoss()
     optimizer = torch.optim.Adam(model.parameters())
@@ -138,8 +143,6 @@ if __name__ == "__main__":
     parser.add_argument("--model",  choices=["base", "gat"], default="gat")
     parser.add_argument("--hidden_dim", type=int, default=100)
     parser.add_argument("--num_heads", type=int, default=1)
-
-
 
     args = parser.parse_args()
     main(args)
