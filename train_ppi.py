@@ -78,9 +78,7 @@ def train(model, loss_fcn, device, optimizer, train_dataloader, test_dataset):
             subgraph, features, labels = data
             features = features.to(device)
             labels = labels.to(device)
-            model.g = subgraph
-            for layer in model.layers:
-                layer.g = subgraph
+            model.set_g(subgraph)
             logits = model(features.float())
             loss = loss_fcn(logits, labels.float())
             optimizer.zero_grad()
