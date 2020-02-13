@@ -81,7 +81,6 @@ class GAT(nn.Module):
         return h
 
     def set_g(self, g):
-        for head in self.layer1.heads:
-            head.g = g
-        for head in self.layer2.heads:
-            head.g = g
+        for layer in self.layers:
+            for head in layer.heads:
+                head.g = g
