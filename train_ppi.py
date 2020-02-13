@@ -151,9 +151,7 @@ def test(model, loss_fcn, device, test_dataloader):
 def evaluate(features, model, subgraph, labels, loss_fcn):
     with torch.no_grad():
         model.eval()
-        model.g = subgraph
-        for layer in model.layers:
-            layer.g = subgraph
+        model.set_g(subgraph)
         output = model(features.float())
         loss_data = loss_fcn(output, labels.float())
         predict = np.where(output.data.cpu().numpy() >= 0.5, 1, 0)
