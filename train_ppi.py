@@ -70,19 +70,56 @@ def main(args):
     return test(model, loss_fcn, device, test_dataloader)
 
 
+# def train(model, loss_fcn, device, optimizer, train_dataloader, test_dataset):
+#     for epoch in range(args.epochs):
+#         model.train()
+#         losses = []
+#         for batch, data in enumerate(train_dataloader):
+#             subgraph, features, labels = data
+#             features = features.to(device)
+#             labels = labels.to(device)
+#             model.set_g(subgraph)
+#             logits = model(features.float())
+#             loss = loss_fcn(logits, labels.float())
+#             optimizer.zero_grad()
+#             loss.backward()
+#             optimizer.step()
+#             losses.append(loss.item())
+#         loss_data = np.array(losses).mean()
+#         print("Epoch {:05d} | Loss: {:.4f}".format(epoch + 1, loss_data))
+#
+#         if epoch % 5 == 0:
+#             scores = []
+#             for batch, test_data in enumerate(test_dataset):
+#                 subgraph, features, labels = test_data
+#                 features = torch.tensor(features).to(device)
+#                 labels = torch.tensor(labels).to(device)
+#                 score, _ = evaluate(features.float(), model, subgraph, labels.float(), loss_fcn)
+#                 scores.append(score)
+#             print("F1-Score: {:.4f} ".format(np.array(scores).mean()))
+
+
 def train(model, loss_fcn, device, optimizer, train_dataloader, test_dataset):
     for epoch in range(args.epochs):
+        print(1)
         model.train()
         losses = []
         for batch, data in enumerate(train_dataloader):
+            print(2)
             subgraph, features, labels = data
             features = features.to(device)
             labels = labels.to(device)
+
             model.set_g(subgraph)
+            print(3)
+
             logits = model(features.float())
+            print(3.1)
             loss = loss_fcn(logits, labels.float())
             optimizer.zero_grad()
+            print(4)
             loss.backward()
+            print(5)
             optimizer.step()
             losses.append(loss.item())
         loss_data = np.array(losses).mean()
