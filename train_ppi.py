@@ -120,7 +120,7 @@ def train(model, loss_fcn, device, optimizer, train_dataloader, test_dataset):
         loss_data = np.array(losses).mean()
         print("Epoch {:05d} | Loss: {:.4f}".format(epoch + 1, loss_data))
 
-        if epoch % 5 == 0:
+        if epoch % 5 == 0 or epoch in [141, 143, 147, 152]:
             scores = []
             for batch, test_data in enumerate(test_dataset):
                 subgraph, features, labels = test_data
