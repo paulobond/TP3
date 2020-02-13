@@ -53,7 +53,8 @@ def main(args):
                     in_dim=n_features,
                     hidden_dim=args.hidden_dim,
                     out_dim=n_classes,
-                    num_heads=args.num_heads).to(device)
+                    num_heads=args.num_heads,
+                    num_layers=args.num_layers).to(device)
     else:
         print(f"Using base model (GCN)")
         model = BasicGraphModel(g=train_dataset.graph, n_layers=2, input_size=n_features,
@@ -170,6 +171,8 @@ if __name__ == "__main__":
     parser.add_argument("--model",  choices=["base", "gat"], default="gat")
     parser.add_argument("--hidden_dim", type=int, default=100)
     parser.add_argument("--num_heads", type=int, default=1)
+    parser.add_argument("--num_layers", type=int, default=2)
+
 
     args = parser.parse_args()
     main(args)
