@@ -62,7 +62,7 @@ class MultiHeadGATLayer(nn.Module):
 class GAT(nn.Module):
     def __init__(self, g, in_dim, hidden_dim, out_dim, num_heads, num_layers=2):
         super(GAT, self).__init__()
-        self.layers = []
+        self.layers = nn.ModuleList()
 
         self.layers.append(MultiHeadGATLayer(g, in_dim, hidden_dim, num_heads))
         out_prev = hidden_dim*num_heads
