@@ -63,7 +63,7 @@ def main(args):
                      in_dim=n_features,
                      num_hidden=args.hidden_dim,
                      num_classes=n_classes,
-                     heads=args.num_heads,
+                     heads=[args.num_heads] * args.num_layers,
                      activation=None,
                      feat_drop=0.6,
                      attn_drop=0.6,
