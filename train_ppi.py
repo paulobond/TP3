@@ -65,8 +65,8 @@ def main(args):
                      num_classes=n_classes,
                      heads=[args.num_heads] * args.num_layers,
                      activation=None,
-                     feat_drop=0.6,
-                     attn_drop=0.6,
+                     feat_drop=args.feat_drop,
+                     attn_drop=args.att_drop,
                      negative_slope=0.2,
                      residual=False
                      ).to(device)
@@ -188,6 +188,10 @@ if __name__ == "__main__":
     parser.add_argument("--hidden_dim", type=int, default=100)
     parser.add_argument("--num_heads", type=int, default=1)
     parser.add_argument("--num_layers", type=int, default=2)
+    parser.add_argument("--feat_drop", type=float, default=0.0)
+    parser.add_argument("--att_drop", type=float, default=0.0)
+
+
 
     args = parser.parse_args()
     main(args)
