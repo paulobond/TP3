@@ -125,6 +125,7 @@ def train(model, loss_fcn, device, optimizer, train_dataloader, test_dataset):
             labels = labels.to(device)
 
             model.set_g(subgraph)
+            #model.g = subgraph
 
             logits = model(features.float())
             loss = loss_fcn(logits, labels.float())
