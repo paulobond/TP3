@@ -46,5 +46,5 @@ class GAT2(nn.Module):
         logits = self.gat_layers[-1](self.g, h).mean(1)
         return logits
 
-    def set_graph(self, g):
+    def set_g(self, g):
         self.g = g
