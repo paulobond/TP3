@@ -11,7 +11,6 @@ from sklearn.metrics import f1_score
 from torch import nn, optim
 from torch.utils.data import DataLoader
 from gat import GAT
-from gat2 import GAT2
 
 MODEL_STATE_FILE = path.join(path.dirname(path.abspath(__file__)), "model_state.pth")
 
@@ -51,25 +50,17 @@ def main(args):
         print(f"Number of heads: {args.num_heads}")
         print(f"Hidden dim: {args.hidden_dim}")
 
-        # model = GAT(g=train_dataset.graph,
-        #             in_dim=n_features,
-        #             hidden_dim=args.hidden_dim,
-        #             out_dim=n_classes,
-        #             num_heads=args.num_heads,
-        #             num_layers=args.num_layers).to(device)
-
-        model = GAT2(g=train_dataset.graph,
-                     num_layers=args.num_layers,
-                     in_dim=n_features,
-                     num_hidden=args.hidden_dim,
-                     num_classes=n_classes,
-                     heads=[args.num_heads] * args.num_layers,
-                     activation=None,
-                     feat_drop=args.feat_drop,
-                     attn_drop=args.att_drop,
-                     negative_slope=0.2,
-                     residual=True
-                     ).to(device)
+        model = GAT(g=train_dataset.graph,
+                    num_layers=args.num_layers,
+                    in_dim=n_features,
+                    num_hidden=args.hidden_dim,
+                    num_classes=n_classes,
+                    heads=[args.num_heads] * args.num_layers,
+                    activation=None,
+                    feat_drop=args.feat_drop,
+                    attn_drop=args.att_drop,
+                    negative_slope=0.2,
+                    residual=True).to(device)
     else:
         print(f"Using base model (GCN)")
         model = BasicGraphModel(g=train_dataset.graph, n_layers=2, input_size=n_features,
@@ -84,35 +75,6 @@ def main(args):
         torch.save(model.state_dict(), MODEL_STATE_FILE)
     model.load_state_dict(torch.load(MODEL_STATE_FILE))
     return test(model, loss_fcn, device, test_dataloader)
-
-
-# def train(model, loss_fcn, device, optimizer, train_dataloader, test_dataset):
-#     for epoch in range(args.epochs):
-#         model.train()
-#         losses = []
-#         for batch, data in enumerate(train_dataloader):
-#             subgraph, features, labels = data
-#             features = features.to(device)
-#             labels = labels.to(device)
-#             model.set_g(subgraph)
-#             logits = model(features.float())
-#             loss = loss_fcn(logits, labels.float())
-#             optimizer.zero_grad()
-#             loss.backward()
-#             optimizer.step()
-#             losses.append(loss.item())
-#         loss_data = np.array(losses).mean()
-#         print("Epoch {:05d} | Loss: {:.4f}".format(epoch + 1, loss_data))
-#
-#         if epoch % 5 == 0:
-#             scores = []
-#             for batch, test_data in enumerate(test_dataset):
-#                 subgraph, features, labels = test_data
-#                 features = torch.tensor(features).to(device)
-#                 labels = torch.tensor(labels).to(device)
-#                 score, _ = evaluate(features.float(), model, subgraph, labels.float(), loss_fcn)
-#                 scores.append(score)
-#             print("F1-Score: {:.4f} ".format(np.array(scores).mean()))
 
 
 def train(model, loss_fcn, device, optimizer, train_dataloader, test_dataset):
