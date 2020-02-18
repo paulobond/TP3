@@ -68,7 +68,7 @@ def main(args):
                      feat_drop=args.feat_drop,
                      attn_drop=args.att_drop,
                      negative_slope=0.2,
-                     residual=False
+                     residual=True
                      ).to(device)
     else:
         print(f"Using base model (GCN)")
