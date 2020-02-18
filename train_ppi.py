@@ -11,6 +11,7 @@ from sklearn.metrics import f1_score
 from torch import nn, optim
 from torch.utils.data import DataLoader
 from gat import GAT
+from gat2 import GAT2
 
 MODEL_STATE_FILE = path.join(path.dirname(path.abspath(__file__)), "model_state.pth")
 
@@ -49,12 +50,25 @@ def main(args):
         print(f"Using model GAT")
         print(f"Number of heads: {args.num_heads}")
         print(f"Hidden dim: {args.hidden_dim}")
-        model = GAT(g=train_dataset.graph,
-                    in_dim=n_features,
-                    hidden_dim=args.hidden_dim,
-                    out_dim=n_classes,
-                    num_heads=args.num_heads,
-                    num_layers=args.num_layers).to(device)
+
+        # model = GAT(g=train_dataset.graph,
+        #             in_dim=n_features,
+        #             hidden_dim=args.hidden_dim,
+        #             out_dim=n_classes,
+        #             num_heads=args.num_heads,
+        #             num_layers=args.num_layers).to(device)
+
+        model = GAT2(g=train_dataset.graph,
+                     num_layers=args.num_layers,
+                     in_dim=n_features,
+                     num_hidden=args.hidden_dim,
+                     heads=args.num_heads,
+                     activation=None,
+                     feat_drop=0.6,
+                     attn_drop=0.6,
+                     negative_slope=0.2,
+                     residual=False
+                     ).to(device)
     else:
         print(f"Using base model (GCN)")
         model = BasicGraphModel(g=train_dataset.graph, n_layers=2, input_size=n_features,
