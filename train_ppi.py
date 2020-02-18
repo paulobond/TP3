@@ -62,6 +62,7 @@ def main(args):
                      num_layers=args.num_layers,
                      in_dim=n_features,
                      num_hidden=args.hidden_dim,
+                     num_classes=n_classes,
                      heads=args.num_heads,
                      activation=None,
                      feat_drop=0.6,
